@@ -41,7 +41,7 @@ export const App = () => {
     return (
         <>
             <GlobalPay
-                apiKey="RAO5WJC3LAJ5284TB327"
+                apiKey="your-api-key"
                 buttonText="Pay Me"
                 buttonStyle={style}
                 payload={payload}
