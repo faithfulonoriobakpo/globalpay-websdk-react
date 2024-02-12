@@ -1,4 +1,4 @@
-# GlobalPay Web SDK for Angular
+# GlobalPay Web SDK for React
 
 This is a React library for integrating GlobalPay Payment Gateway into React applications.
 
