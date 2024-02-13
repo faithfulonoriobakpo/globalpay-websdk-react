@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 
+export interface GeneratePaymentLinkError {
+  message: string,
+  details: any
+}
 export interface Props {
+    isLive: boolean,
     buttonText?: string,
     buttonStyle?: React.CSSProperties,
     apiKey: string,
-    payload: GeneratePaymentLinkPayload
+    payload: GeneratePaymentLinkPayload,
+    onError: (error: GeneratePaymentLinkError) => void
 }
 
 export interface GeneratePaymentLinkPayload {
@@ -39,39 +45,90 @@ interface GeneratePaymentLinkResponse {
 
 export const  GlobalPay = (
         {
-            buttonText = "Pay",
-            buttonStyle,
-            apiKey, 
-            payload
+          isLive = true,
+          buttonText = "Pay",
+          buttonStyle,
+          apiKey, 
+          payload,
+          onError
         }: Props
     ) => {
 
   const [loading, setLoading] = useState(false);
+  const liveUrl = 'https://paygw.globalpay.com.ng/globalpay-paymentgateway/api/paymentgateway/generate-payment-link';
+  const testUrl = 'https://newwebservicetest.zenithbank.com:8443/new-globalpay-paymentgateway-external/api/paymentgateway/generate-payment-link';
   
   const generatePaymentLink = () => {
+
+    const emptyKeys = findEmptyKeys(payload);
+
+    if(!apiKey){
+      return onError({message: 'API Key is required', details:null});
+    }else if(!payload){
+      return onError({message: 'Payload is required', details:null});
+    }else if(emptyKeys.length > 0){
+      const requiredFields = emptyKeys.join(', ').replace(/, (?!.*, )/, ' and ')
+      return onError({message: `Payload is invalid. ${requiredFields} required`, details: null});
+    }
 
     setLoading(true);
 
     fetch(
-        'https://paygw.globalpay.com.ng/globalpay-paymentgateway/api/paymentgateway/generate-payment-link',
-        {
-            method: 'POST',
-            headers: {
-              'Language': 'en',
-              'Content-Type': 'application/json',
-              'apiKey': apiKey,
-            },
-            body: JSON.stringify(payload),
-        }
+      isLive? liveUrl : testUrl,
+      {
+          method: 'POST',
+          headers: {
+            'Language': 'en',
+            'Content-Type': 'application/json',
+            'apiKey': apiKey,
+          },
+          body: JSON.stringify(payload),
+      }
     )
-    .then(response => response.json())
+    .then(
+      response => {
+        if (!response.ok) {
+          throw new Error(JSON.stringify(response));
+        }
+        return response.json();
+      }
+    )
     .then((res: GeneratePaymentLinkResponse) => {
       const redirectURL = res?.data?.checkoutUrl;
       if(redirectURL) window.location.href = redirectURL;
     })
-    .catch(error => console.error(error))
+    .catch(
+      error => {
+        console.error(error);
+        onError(
+          {
+            message: 'error occurred generating paymentlink',
+            details: JSON.parse(error)
+          }
+        );
+      })
     .finally(() => setLoading(false));
   };
+
+  const findEmptyKeys = (payload: any): string[] => {
+
+    const emptyKeys: string[] = [];
+    
+    for (const key in payload) {
+
+      if(key == 'address') continue;
+
+      if (payload.hasOwnProperty(key)) {
+        if (payload[key] === null || payload[key] === undefined || payload[key] === '') {
+          emptyKeys.push(key);
+        } else if (typeof payload[key] === 'object') {
+          const subEmptyKeys = findEmptyKeys(payload[key]);
+          emptyKeys.push(...subEmptyKeys);
+        }
+      }
+    }
+    return emptyKeys;
+  }
 
   return (
     <div>

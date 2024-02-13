@@ -1,6 +1,6 @@
 {
   "name": "globalpay-websdk-react",
-  "version": "1.0.0",
+  "version": "1.2.4",
   "description": "globalpay gateway sdk for react applications",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rm -rf dist/ && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module CommonJS --outDir dist/cjs"
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
+    "publish": "cd dist && npm publish"
   },
   "keywords": [
     "globalpay"
