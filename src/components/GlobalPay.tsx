@@ -86,9 +86,10 @@ export const  GlobalPay = (
       }
     )
     .then(
-      response => {
+      async response => {
         if (!response.ok) {
-          throw new Error(JSON.stringify(response));
+          const errorResponse = await response.clone().json();
+          throw JSON.stringify(errorResponse);
         }
         return response.json();
       }
