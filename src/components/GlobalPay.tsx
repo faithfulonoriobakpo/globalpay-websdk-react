@@ -149,7 +149,7 @@ export const  GlobalPay = (
                 font-weight: bold;
             }
             
-            button.fade {
+            button.fade, button:disabled {
                 opacity: 0.5;
             }
             
