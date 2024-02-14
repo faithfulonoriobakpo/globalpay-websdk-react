@@ -11,7 +11,7 @@ export interface Props {
   apiKey: string,
   payload: GeneratePaymentLinkPayload,
   onError: (error: GeneratePaymentLinkError) => void,
-  buttonDisabled: boolean
+  buttonDisabled?: boolean
 }
 
 export interface GeneratePaymentLinkPayload {
@@ -148,8 +148,12 @@ export const  GlobalPay = (
                 border-radius: 4px;
                 font-weight: bold;
             }
+
+            button:disabled {
+              opacity: 0.5;
+            }
             
-            button.fade, button:disabled {
+            button.fade {
                 opacity: 0.5;
             }
             
