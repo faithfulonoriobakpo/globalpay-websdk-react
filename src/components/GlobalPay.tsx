@@ -5,12 +5,13 @@ export interface GeneratePaymentLinkError {
   details: any
 }
 export interface Props {
-    isLive: boolean,
-    buttonText?: string,
-    buttonStyle?: React.CSSProperties,
-    apiKey: string,
-    payload: GeneratePaymentLinkPayload,
-    onError: (error: GeneratePaymentLinkError) => void
+  isLive: boolean,
+  buttonText?: string,
+  buttonStyle?: React.CSSProperties,
+  apiKey: string,
+  payload: GeneratePaymentLinkPayload,
+  onError: (error: GeneratePaymentLinkError) => void,
+  buttonDisabled: boolean
 }
 
 export interface GeneratePaymentLinkPayload {
@@ -50,7 +51,8 @@ export const  GlobalPay = (
           buttonStyle,
           apiKey, 
           payload,
-          onError
+          onError,
+          buttonDisabled = false
         }: Props
     ) => {
 
@@ -169,9 +171,10 @@ export const  GlobalPay = (
             `}
         </style>
         <button 
-        style={buttonStyle}
-        className={loading? 'fade': ''}
-        onClick={generatePaymentLink}
+          style={buttonStyle}
+          className={loading? 'fade': ''}
+          onClick={generatePaymentLink}
+          disabled={buttonDisabled}
         >
         {buttonText}
         {loading && <span className='loading-animation'></span>}
