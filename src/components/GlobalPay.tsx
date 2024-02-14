@@ -178,7 +178,7 @@ export const  GlobalPay = (
           style={buttonStyle}
           className={loading? 'fade': ''}
           onClick={generatePaymentLink}
-          disabled={buttonDisabled}
+          disabled={buttonDisabled || loading}
         >
         {buttonText}
         {loading && <span className='loading-animation'></span>}
