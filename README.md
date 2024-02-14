@@ -38,6 +38,10 @@ export const App = () => {
         color: 'yellow'
     };
 
+    function onError(error) {
+        console.log(error);
+    }
+
     return (
         <>
             <GlobalPay
@@ -45,6 +49,7 @@ export const App = () => {
                 buttonText="Pay Me"
                 buttonStyle={style}
                 payload={payload}
+                onError={onError}
             ></GlobalPay>
         </>
     )
@@ -52,3 +57,5 @@ export const App = () => {
 ```
 
 > buttonText and buttonStyle inputs are optional. buttonText is defaulted to Pay unless specified from prop and buttonStyle is defaulted to a blue background with white text.
+
+> isLive is defaulted to true
