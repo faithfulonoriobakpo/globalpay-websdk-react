@@ -1,7 +1,7 @@
 {
-  "name": "globalpay-websdk-react",
+  "name": "globalpay-react",
   "version": "1.2.4",
-  "description": "globalpay gateway sdk for react applications",
+  "description": "globalpay gateway library for react applications",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
